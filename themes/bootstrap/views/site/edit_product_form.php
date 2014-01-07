@@ -1,6 +1,8 @@
 <legend>
     <strong>Edit Product <span class="font-green"><?php echo $productModel->code;?></span></strong>
+    <a href="<?php echo Yii::app()->createAbsoluteUrl('');?>" class="btn btn-small btn-inverse pull-right">Add Product</a>
 </legend>
+
 <?php
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'type' => 'horizontal',
