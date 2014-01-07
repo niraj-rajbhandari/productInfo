@@ -35,7 +35,7 @@ $this->pageTitle = Yii::app()->name;
             $this->widget('bootstrap.widgets.TbButton', array(
                 'buttonType' => 'submit',
                 'type' => 'primary',
-                'size'=>'small',
+                'size' => 'small',
                 'label' => 'Add Product',
             ));
             $this->endWidget();
@@ -122,9 +122,12 @@ $this->pageTitle = Yii::app()->name;
     ));
     ?>
 </div>
-<script type="text/javascript">
-    <?php if(isset($_GET['edit']) && $_GET['edit']=='yes'):?>
-         $('html,body').animate({ scrollTop: $('#product-list-gridview').offset().top }, 'slow');
-    <?php endif;?>    
-</script>
+<?php
+$cs = Yii::app()->getClientScript();
+if (isset($_GET['edit']) && $_GET['edit'] == 'yes'):
+    $cs->registerScript(
+            'after-edit', "  $('html,body').animate({ scrollTop: $('#product-list-gridview').offset().top }, 'slow');", CClientScript::POS_END
+    );
+endif;
+?>
 

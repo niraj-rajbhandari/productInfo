@@ -9,11 +9,15 @@
 
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
-        <?php Yii::app()->bootstrap->register(); ?>
-        <script>
-            baseUrl='<?php echo Yii::app()->request->baseUrl;?>';
-        </script>
-        <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->assetManager->publish('js/common.js'));?>
+        <?php
+        Yii::app()->bootstrap->register();
+
+        $cs = Yii::app()->getClientScript();
+        $cs->registerScript(
+                'baseUrl', 'baseUrl="' . Yii::app()->request->getBaseUrl(true) . '";', CClientScript::POS_HEAD
+        );
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->assetManager->publish('js/common.js'));
+        ?>
     </head>
 
     <body>
@@ -23,7 +27,7 @@
             'type' => 'inverse',
             'fixed' => 'top',
             'brand' => 'Products Info',
-            'fluid'=>'true',
+            'fluid' => 'true',
             'brandUrl' => Yii::app()->createAbsoluteurl(''),
         ));
         ?>
@@ -37,11 +41,11 @@
                 ));
                 ?><!-- breadcrumbs -->
             <?php endif ?>
-                <div class="row-fluid">
-                    <div class="span12">
-                        <?php echo $content; ?>
-                    </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <?php echo $content; ?>
                 </div>
+            </div>
             <div class="clear"></div>
 
 
