@@ -1,3 +1,6 @@
+a:focus, a.active,input[type="submit"]:active,input[type="submit"]:focus,.btn:focus,.btn:active{
+    outline: none !important;
+}
 #page {
     padding-top: 60px;
 }
