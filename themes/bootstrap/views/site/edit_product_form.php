@@ -22,7 +22,7 @@ echo $form->dropdownListRow($productModel, 'location', $location);
 echo $form->textFieldRow($productModel, 'cost_price', array('id' => 'input-cost-price'));
 echo $form->textFieldRow($productModel, 'marked_price');
 echo $form->textFieldRow($productModel, 'selling_price', array('id' => 'input-selling-price'));
-echo $form->textFieldRow($productModel, 'net_profit', array('id' => 'input-gross-profit', 'disabled' => 'disabled'));
+echo $form->textFieldRow($productModel, 'gross_profit', array('id' => 'input-gross-profit', 'disabled' => 'disabled'));
 echo $form->textAreaRow($productModel, 'description', array('cols' => '5', 'rows' => '5'));
 ?>
 <div class="control-group">
