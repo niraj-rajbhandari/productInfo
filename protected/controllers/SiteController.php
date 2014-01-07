@@ -101,7 +101,7 @@ class SiteController extends Controller
                 if (Yii::app()->request->isPostRequest) {
                     if ($id != NULL) {
                         $productModel = Products::model()->findByPk($id);
-                        $location = array('Kathmandu' => 'Kathmandu', 'Bhaktapur' => 'Bhaktapur', 'Lalitpur' => 'Lalitpur', 'Pokhara' => 'Pokhara');
+                       $location = array('Durbar Marg DS' => 'Durbar Marg DS', 'Durbar Marg NC' => 'Durbar Marg NC', 'Kumaripati NC' => 'Kumaripati NC', 'People\'s Plaza NC' => 'People\'s Plaza NC','CTC NC'=>'CTC NC','Pokhara NC'=>'Pokhara NC','Pokhara DS'=>'Pokhara DS');
                         $productType = array('Sweater' => 'Sweater', 'Pants' => 'Pants', 'Shirt' => 'Shirt', 'Tshirt' => 'Tshirt');
 
                         $view = $this->renderPartial('edit_product_form', array('productModel' => $productModel, 'location' => $location, 'id' => $id), true);
