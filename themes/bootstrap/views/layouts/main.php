@@ -13,6 +13,7 @@
         <script>
             baseUrl='<?php echo Yii::app()->request->baseUrl;?>';
         </script>
+        <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->assetManager->publish('js/common.js'));?>
     </head>
 
     <body>
