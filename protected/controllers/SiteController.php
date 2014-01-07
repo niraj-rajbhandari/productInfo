@@ -72,7 +72,7 @@ class SiteController extends Controller
             //re-indexing array keys
 //            $arrayProvider = array_values($arrayProvider);
 
-            $dataProvider = new CArrayDataProvider($arrayProvider, array('id' => 'id', 'sort' => array('attributes' => array('code', 'product_type', 'location', 'cost_price', 'selling_price', 'marked_price', 'net_profit', 'date'),), 'pagination' => array('pageSize' => 10,)));
+            $dataProvider = new CArrayDataProvider($arrayProvider, array('id' => 'id', 'sort' => array('attributes' => array('code', 'product_type', 'location', 'cost_price', 'selling_price', 'marked_price', 'gross_profit', 'date'),), 'pagination' => array('pageSize' => 10,)));
             $this->render('index', array('productModel' => $productModel, 'location' => $location, 'dataProvider' => $dataProvider, 'arrayFilter' => $arrayFilter));
         } catch (Exception $e) {
             throw new CHttpException('500', $e->getMessage());
