@@ -7,6 +7,7 @@ $this->pageTitle = Yii::app()->name;
 <div class="form-add-product">
     <legend>
         <strong>Product Entry Form</strong>
+        <a href="#product-list" class="btn btn-small btn-success pull-right product-list">Show Product List</a>
     </legend>
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -46,12 +47,12 @@ $this->pageTitle = Yii::app()->name;
 </div>
 <div class="clearfix"></div>
 <hr>
-<div class="">
+<div class="product-list">
     <legend><strong>Products List</strong></legend>
     <?php
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider' => $dataProvider,
-        'id' => 'neustar-gridview',
+        'id' => 'product-list-gridview',
         'filter' => $arrayFilter,
         'type' => 'condensed striped ',
         'columns' => array(
@@ -121,6 +122,10 @@ $this->pageTitle = Yii::app()->name;
     ?>
 </div>
 <script type="text/javascript">
+    $('.product-list').click(function() {
+        
+        $('html,body').animate({ scrollTop: $('#product-list-gridview').offset().top }, 'slow');
+    });
     function autoUpdateGridView(id) {
         var timer;
         var inputId = '#' + id + ' .filters input[type=text] ';
@@ -176,7 +181,7 @@ $this->pageTitle = Yii::app()->name;
         $('.input-product-type').typeahead({
             source: function(query, process) {
                 states = [];
-                noContractor={};
+                noContractor = {};
                 $.ajax({
                     url: baseUrl + '/site/getProductType',
                     type: "POST",
@@ -195,7 +200,7 @@ $this->pageTitle = Yii::app()->name;
                                 states.push(state.product_type);
                             });
                         }
-                        
+
                         process(states);
                     }
                 });
