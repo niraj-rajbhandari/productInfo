@@ -1,7 +1,7 @@
 
 <legend>
-    <strong>Edit Product <span class="font-green"><?php echo $productModel->code;?></span></strong>
-    <a href="<?php echo Yii::app()->createAbsoluteUrl('');?>" class="btn btn-small btn-inverse pull-right">Add Product</a>
+    <strong>Edit Product <span class="font-green"><?php echo $productModel->code; ?></span></strong>
+    <a href="<?php echo Yii::app()->createAbsoluteUrl(''); ?>" class="btn btn-small btn-inverse pull-right">Add Product</a>
 </legend>
 
 <?php
@@ -17,8 +17,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 echo $form->errorSummary($productModel);
 echo $form->uneditableRow($productModel, 'date');
 echo $form->textFieldRow($productModel, 'code');
-echo $form->textFieldRow($productModel, 'product_type', array('class' => 'input-product-type','autocomplete'=>'off'));
-echo $form->dropdownListRow($productModel, 'location', $location, array('prompt' => 'Select a Location'));
+echo $form->textFieldRow($productModel, 'product_type', array('class' => 'input-product-type', 'autocomplete' => 'off'));
+echo $form->dropdownListRow($productModel, 'location', $location);
 echo $form->textFieldRow($productModel, 'cost_price', array('id' => 'input-cost-price'));
 echo $form->textFieldRow($productModel, 'marked_price');
 echo $form->textFieldRow($productModel, 'selling_price', array('id' => 'input-selling-price'));
@@ -34,7 +34,7 @@ echo $form->textAreaRow($productModel, 'description', array('cols' => '5', 'rows
             'label' => 'Edit Product',
         ));
         ?>
-          <?php
+        <?php
         $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType' => 'reset',
             'type' => 'info',
@@ -45,3 +45,15 @@ echo $form->textAreaRow($productModel, 'description', array('cols' => '5', 'rows
     </div>
 
 </div>
+<script type="text/javascript">
+    $('#input-selling-price,#input-cost-price').focusout(function() {
+        var costPrice = $('#input-cost-price').val();
+        var sellingPrice = $('#input-selling-price').val();
+        if (costPrice.length != 0 || sellingPrice.length != 0) {
+            var grossProfit = sellingPrice - costPrice;
+            $('#input-gross-profit').val(grossProfit);
+            $('#input-gross-profit').removeAttr('disabled');
+        }
+
+    });
+</script>
