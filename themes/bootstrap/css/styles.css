@@ -25,13 +25,15 @@
     min-height:500px;
 }
 
+.form-horizontal .control-group{
+    margin-bottom:10px !important;
+}
 .grid-view table.items thead tr th {
     text-align:center !important;
 }
 .grid-view .summary{
     text-align:left !important;
-    font-weight:bold;
-    color: #686D19;
+    font-size:12px;
 
 }
 .footer{
