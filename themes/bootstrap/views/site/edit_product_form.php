@@ -1,3 +1,4 @@
+
 <legend>
     <strong>Edit Product <span class="font-green"><?php echo $productModel->code;?></span></strong>
     <a href="<?php echo Yii::app()->createAbsoluteUrl('');?>" class="btn btn-small btn-inverse pull-right">Add Product</a>
@@ -44,55 +45,3 @@ echo $form->textAreaRow($productModel, 'description', array('cols' => '5', 'rows
     </div>
 
 </div>
-<script type="text/javascript">
-// Autosuggest
-    $('.input-product-type').typeahead({
-        source: function(query, process) {
-            $states = [];
-            $.ajax({
-                url: baseUrl + '/site/getProductType',
-                type: "POST",
-                data: {query: $('.input-product-type').val()},
-                dataType: "JSON",
-                async: false,
-                success: function(data) {
-                    states = [];
-                    map = {};
-                    noContractor = {};
-                    if (data.length == 0) {
-                        noContractor.productType = 'No product Type';
-                        states.push(noContractor.product_type);
-                    } else {
-                        $.each(data, function(i, state) {
-                            states.push(state.product_type);
-                        });
-                    }
-                    process(states);
-                }
-            });
-
-        },
-        items: 37,
-        sorter: function(items) {
-            return items.sort();
-        },
-        highlighter: function(item) {
-            var regex = new RegExp('(' + this.query + ')', 'gi');
-            return item.replace(regex, "<strong class='font-green'>$1</strong>");
-        },
-        updater: function(item) {
-            var itemSplit = item.split(',');
-            var productType = itemSplit[0];
-            if (productType != "No product Type") {
-                return productType;
-            }
-
-
-        },
-        matcher: function(item) {
-            return true;
-        }
-    });
-
-</script>
-
