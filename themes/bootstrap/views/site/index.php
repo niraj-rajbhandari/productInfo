@@ -7,7 +7,7 @@ $this->pageTitle = Yii::app()->name;
 <div class="form-add-product">
     <legend>
         <strong>Product Entry Form</strong>
-        <a href="#product-list" class="btn btn-small btn-success pull-right product-list">Show Product List</a>
+        <a href="#product-list" class="btn btn-small btn-inverse pull-right product-list">Show Product List</a>
     </legend>
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -35,6 +35,7 @@ $this->pageTitle = Yii::app()->name;
             $this->widget('bootstrap.widgets.TbButton', array(
                 'buttonType' => 'submit',
                 'type' => 'primary',
+                'size'=>'small',
                 'label' => 'Add Product',
             ));
             $this->endWidget();
