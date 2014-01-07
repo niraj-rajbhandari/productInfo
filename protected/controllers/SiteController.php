@@ -126,7 +126,7 @@ class SiteController extends Controller
                         $productModel->attributes = Yii::app()->request->getPost('Products');
                         if ($productModel->validate()) {
                             if ($productModel->update()) {
-                                $this->redirect(Yii::app()->createAbsoluteUrl(''));
+                                $this->redirect(Yii::app()->createAbsoluteUrl('/site/index',array('edit'=>'yes')));
                             }
                         }
                     }
