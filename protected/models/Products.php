@@ -11,7 +11,7 @@
  * @property integer $cost_price
  * @property integer $marked_price
  * @property integer $selling_price
- * @property integer $net_profit
+ * @property integer $gross_profit
  * @property string $description
  * @property string $date
  */
@@ -43,13 +43,13 @@ class Products extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('cost_price, marked_price, selling_price, net_profit', 'numerical', 'integerOnly'=>true),
+			array('cost_price, marked_price, selling_price, gross_profit', 'numerical', 'integerOnly'=>true),
 			array('code', 'length', 'max'=>10),
 			array('product_type, location', 'length', 'max'=>50),
 			array('description, date', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, code, product_type, location, cost_price, marked_price, selling_price, net_profit, description, date', 'safe', 'on'=>'search'),
+			array('id, code, product_type, location, cost_price, marked_price, selling_price, gross_profit, description, date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -77,7 +77,7 @@ class Products extends CActiveRecord
 			'cost_price' => 'Cost Price',
 			'marked_price' => 'Marked Price',
 			'selling_price' => 'Selling Price',
-			'net_profit' => 'Net Profit',
+			'gross_profit' => 'Gross Profit',
 			'description' => 'Description',
 			'date' => 'Date',
 		);
@@ -101,7 +101,7 @@ class Products extends CActiveRecord
 		$criteria->compare('cost_price',$this->cost_price);
 		$criteria->compare('marked_price',$this->marked_price);
 		$criteria->compare('selling_price',$this->selling_price);
-		$criteria->compare('net_profit',$this->net_profit);
+		$criteria->compare('gross_profit',$this->gross_profit);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('date',$this->date,true);
 
