@@ -31,6 +31,7 @@ echo $form->textAreaRow($productModel, 'description', array('cols' => '5', 'rows
         $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType' => 'submit',
             'type' => 'primary',
+            'size'=>'small',
             'label' => 'Edit Product',
         ));
         ?>
@@ -38,6 +39,7 @@ echo $form->textAreaRow($productModel, 'description', array('cols' => '5', 'rows
         $this->widget('bootstrap.widgets.TbButton', array(
             'buttonType' => 'reset',
             'type' => 'info',
+            'size'=>'small',
             'label' => 'Reset',
         ));
         $this->endWidget();
