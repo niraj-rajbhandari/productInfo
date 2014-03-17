@@ -1,3 +1,3 @@
-<div class="footer">
-    <b>Copyright&copy; Leapfrog Technology.</b>
+<div class="footer container-fluid">
+    <b>Copyright &copy; Leapfrog Technology.</b>
 </div>

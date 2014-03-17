@@ -7,7 +7,7 @@ $this->pageTitle = Yii::app()->name;
 <div class="form-add-product">
     <legend>
         <strong>Product Entry Form</strong>
-        <a href="#product-list" class="btn btn-small btn-inverse pull-right product-list">Show Product List</a>
+<!--        <a href="javascript:void(0)" class="btn btn-small btn-inverse pull-right product-list">Show Product List</a>-->
     </legend>
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -22,7 +22,7 @@ $this->pageTitle = Yii::app()->name;
     echo $form->uneditableRow($productModel, 'date');
     echo $form->textFieldRow($productModel, 'code',array('autocomplete'=>'off'));
     echo $form->textFieldRow($productModel, 'product_type', array('autocomplete' => 'off', 'class' => 'input-product-type'));
-    echo $form->dropdownListRow($productModel, 'location', $location, array('prompt' => 'Select a Location'));
+    echo $form->dropdownListRow($productModel, 'location', $stores, array('prompt' => 'Select a Location'));
     echo $form->textFieldRow($productModel, 'cost_price', array('id' => 'input-cost-price','autocomplete'=>'off'));
     echo $form->textFieldRow($productModel, 'marked_price',array('autocomplete'=>'off'));
     echo $form->textFieldRow($productModel, 'selling_price', array('id' => 'input-selling-price','autocomplete'=>'off'));
@@ -49,7 +49,7 @@ $this->pageTitle = Yii::app()->name;
 <div class="clearfix"></div>
 <hr>
 <div class="product-list">
-    <legend><strong>Products List</strong></legend>
+    <legend><strong>Products Added Today</strong></legend>
     <?php
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider' => $dataProvider,

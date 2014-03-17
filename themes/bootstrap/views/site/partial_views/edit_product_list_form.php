@@ -1,0 +1,68 @@
+
+<div class="modal-header">
+  <a href="javascript:void(0)" class="close" data-dismiss="modal" aria-hidden="true">X</a>
+  <h3>Edit Product : <span class="font-green"><?php echo $productModel->code; ?></span></h3>
+</div>
+<!--<div class="modal-body">-->
+  <?php
+  $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+      'type'                   => 'horizontal',
+      'id'                     => 'form-edit-products',
+      'action'                 => Yii::app()->createAbsoluteUrl('/site/updateProduct', array('id'   => $id, 'list' => 'yes')),
+      'enableClientValidation' => true,
+      'clientOptions'          => array(
+          'validateOnSubmit' => true,
+      ),
+      'htmlOptions'=>array('style'=>'margin-top:5px;')
+  ));
+  echo $form->errorSummary($productModel);
+  echo $form->uneditableRow($productModel, 'date');
+  echo $form->textFieldRow($productModel, 'code', array('autocomplete' => 'off'));
+  echo $form->textFieldRow($productModel, 'product_type', array('class'        => 'input-product-type', 'autocomplete' => 'off'));
+  echo $form->dropdownListRow($productModel, 'location', $location);
+  echo $form->textFieldRow($productModel, 'cost_price', array('id'           => 'input-cost-price', 'autocomplete' => 'off'));
+  echo $form->textFieldRow($productModel, 'marked_price', array('autocomplete' => 'off'));
+  echo $form->textFieldRow($productModel, 'selling_price', array('id'           => 'input-selling-price', 'autocomplete' => 'off'));
+  echo $form->textFieldRow($productModel, 'gross_profit', array('id'           => 'input-gross-profit', 'disabled'     => 'disabled', 'autocomplete' => 'off'));
+  echo $form->textAreaRow($productModel, 'description', array('cols' => '5', 'rows' => '5'));
+
+  ?>
+  <div class="control-group">
+    <div class="controls">
+      <?php
+      $this->widget('bootstrap.widgets.TbButton', array(
+          'buttonType' => 'submit',
+          'type'       => 'primary',
+          'size'       => 'small',
+          'label'      => 'Edit Product',
+      ));
+
+      ?>
+      <?php
+      $this->widget('bootstrap.widgets.TbButton', array(
+          'buttonType' => 'reset',
+          'type'       => 'info',
+          'size'       => 'small',
+          'label'      => 'Reset',
+      ));
+      $this->endWidget();
+
+      ?>
+    </div>
+
+  </div>
+
+<!--</div>-->
+
+<script type="text/javascript">
+  $('#input-selling-price,#input-cost-price').focusout(function() {
+    var costPrice = $('#input-cost-price').val();
+    var sellingPrice = $('#input-selling-price').val();
+    if (costPrice.length != 0 || sellingPrice.length != 0) {
+      var grossProfit = sellingPrice - costPrice;
+      $('#input-gross-profit').val(grossProfit);
+      $('#input-gross-profit').removeAttr('disabled');
+    }
+
+  });
+</script>

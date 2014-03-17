@@ -1,8 +1,33 @@
-a:focus, a.active,input[type="submit"]:active,input[type="submit"]:focus,.btn:focus,.btn:active{
-    outline: none !important;
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
 }
-#page {
-    padding-top: 60px;
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -60px;
+}
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+  height: 60px;
+}
+#footer {
+  background-color: #f5f5f5;
+}
+#footer > .container-fluid{
+  padding-left:0;
+  padding-right:0;
+}
+body{
+  padding:0 !important;
+}
+a:focus, a.active,input[type="submit"]:active,input[type="submit"]:focus,.btn:focus,.btn:active{
+  outline: none !important;
 }
 .form-add-product {max-width: 450px; padding: 19px 29px 29px; margin: 0 auto 20px; background-color: #fff;
                    border: 1px solid #e5e5e5; -webkit-border-radius: 5px;  -moz-bordainer-radius: 5px;
@@ -12,39 +37,61 @@ a:focus, a.active,input[type="submit"]:active,input[type="submit"]:focus,.btn:fo
                    box-shadow: 0 1px 2px rgba(0,0,0,.05);
 }
 .font-green{
-    color:#3C9545 !important;
+  color:#3C9545 !important;
 }
-
 .typeahead{
-    z-index:999 !important;
+  z-index:999 !important;
 }
 .typeahead li a:hover,.typeahead li a:focus,.typeahead li a:active, .typeahead li.active a {
-    background: #b3b3b3 !important;
+  background: #b3b3b3 !important;
 }
-.navbar{
-    min-width:768px;
+.navbar-inner{
+  padding-left:20px !important;
+  padding-right:20px !important;
 }
-#content{
-    min-height:500px;
+#wrap > .container-fluid {
+  padding-top: 60px;
 }
-
 .form-horizontal .control-group{
-    margin-bottom:10px !important;
+  margin-bottom:10px !important;
 }
 .grid-view table.items thead tr th {
-    text-align:center !important;
+  text-align:center !important;
 }
 .grid-view .summary{
-    text-align:left !important;
-    font-size:12px;
+  text-align:left !important;
+  font-size:12px;
 
 }
 .footer{
-    height:50px;
-    background:#b3b3b3;
-    width:100%;
-    text-align:center;
-    color:#fff;
-    margin-top:10px;
-    padding:10px 0px;
+  width:100%;
+  text-align:center;
+  color:#000;
+  padding:10px 0px;
 }
+
+.modal {
+  position: absolute !important;
+  top: 10% !important;
+}
+
+
+@media all and (min-height: 40em) {
+  .modal {
+    position: fixed;
+  }
+  .modal-body {
+    max-height: 35em;
+    overflow-y: auto;
+  }
+}
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+  #footer {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
