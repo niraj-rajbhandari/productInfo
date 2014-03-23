@@ -59,7 +59,7 @@ class SiteController extends Controller {
       $productCriteria->addCondition($condition);
       $productsInfo = Products::model()->findAll($productCriteria);
 
-      $dataProviderContainer = $this->_getProductsListArrayProvider($productsInfo);
+      $dataProviderContainer = $this->_getListArrayProvider($productsInfo);
 
       $this->render('index', array('productModel' => $productModel, 'stores'       => $stores, 'dataProvider' => $dataProviderContainer['dataProvider'], 'arrayFilter'  => $dataProviderContainer['arrayFilter']));
     }
@@ -71,7 +71,7 @@ class SiteController extends Controller {
   public function actionlistProducts() {
     try {
       $productsModel = Products::model()->findAll();
-      $dataProviderContainer = $this->_getProductsListArrayProvider($productsModel);
+      $dataProviderContainer = $this->_getListArrayProvider($productsModel);
       $this->render('product_list', array('dataProvider' => $dataProviderContainer['dataProvider'], 'arrayFilter'  => $dataProviderContainer['arrayFilter']));
     }
     catch (Exception $e) {
@@ -79,7 +79,8 @@ class SiteController extends Controller {
     }
   }
 
-  private function _getProductsListArrayProvider($productsInfo) {
+  //gets array provider for grid view
+  private function _getListArrayProvider($productsInfo) {
     $products = array();
     if (!empty($productsInfo)) {
       foreach ($productsInfo as $product) {
@@ -101,7 +102,7 @@ class SiteController extends Controller {
     //re-indexing array keys
 //            $arrayProvider = array_values($arrayProvider);
 
-    $dataProvider = new CArrayDataProvider($arrayProvider, array('id'         => 'id', 'sort'       => array('attributes' => array('code', 'product_type', 'location', 'cost_price', 'selling_price', 'marked_price', 'gross_profit', 'date'),), 'pagination' => array('pageSize' => 10,)));
+    $dataProvider = new CArrayDataProvider($arrayProvider, array('id'         => 'id', 'sort'       => array('attributes' => array('code', 'product_type', 'location', 'cost_price', 'selling_price', 'marked_price', 'gross_profit', 'date'),), 'pagination' => array('pageSize' => 20,)));
 
     $returnData = array();
     $returnData['dataProvider'] = $dataProvider;
@@ -114,12 +115,12 @@ class SiteController extends Controller {
    * @param int $id id of the product
    * @return boolean true/false on success/failure of delete operation
    */
-  public function actionDelete($id = NULL) {
+  public function actionDeleteInventory($id = NULL) {
     try {
       if (Yii::app()->request->isAjaxRequest) {
         if ($id != NULL) {
-          $productModel = Products::model()->findByPk($id);
-          if ($productModel->delete()) {
+          $inventoryModel = Inventory::model()->findByPk($id);
+          if ($inventoryModel->delete()) {
             return true;
           }
         }
@@ -146,9 +147,10 @@ class SiteController extends Controller {
             foreach ($storesModel as $store) {
               $stores[$store->store_name] = $store->store_name;
             }
-            if(isset($_POST['list']) && $_POST['list']=="yes"){
+            if (isset($_POST['list']) && $_POST['list'] == "yes") {
               $view = $this->renderPartial('partial_views/edit_product_list_form', array('productModel' => $productModel, 'location'     => $stores, 'id'           => $id), true);
-            }else{
+            }
+            else {
               $view = $this->renderPartial('edit_product_form', array('productModel' => $productModel, 'location'     => $stores, 'id'           => $id), true);
             }
             echo CJSON::encode(array('view' => $view));
@@ -172,12 +174,12 @@ class SiteController extends Controller {
             $productModel->attributes = Yii::app()->request->getPost('Products');
             if ($productModel->validate()) {
               if ($productModel->update()) {
-                if(isset($_GET['list']) && $_GET['list']=="yes"){
+                if (isset($_GET['list']) && $_GET['list'] == "yes") {
                   $this->redirect(Yii::app()->createAbsoluteUrl('/site/listproducts'));
-                }else{
+                }
+                else {
                   $this->redirect(Yii::app()->createAbsoluteUrl('/site/index', array('edit' => 'yes')));
                 }
-
               }
             }
           }
@@ -223,6 +225,7 @@ class SiteController extends Controller {
       Yii::app()->end();
     }
   }
+
   public function actionAddProductType() {
     try {
       if (Yii::app()->request->isAjaxRequest) {
@@ -258,7 +261,60 @@ class SiteController extends Controller {
     }
   }
 
-    public function actionAddStoreForm() {
+  public function actionListProductType() {
+    try {
+      $productTypeModel = ProductType::model()->findAll();
+      $productTypes = array();
+      if (!empty($productTypeModel)) {
+        foreach ($productTypeModel as $productType) {
+          $productTypes[] = $productType->attributes;
+        }
+      }
+
+      $arrayFilter = new ArrayFilterClass;
+
+      if (isset($_GET['ArrayFilterClass'])) {
+        $arrayFilter->filters = $_GET['ArrayFilterClass'];
+      }
+
+      $arrayProvider = $arrayFilter->filter($productTypes);
+      //re-indexing array keys
+//            $arrayProvider = array_values($arrayProvider);
+
+      $dataProvider = new CArrayDataProvider($arrayProvider, array('id'         => 'id', 'sort'       => array('attributes' => array('id', 'product_type')), 'pagination' => array('pageSize' => 50,)));
+
+      $returnData = array();
+      $returnData['dataProvider'] = $dataProvider;
+      $returnData['arrayFilter'] = $arrayFilter;
+      $this->render('product_type_list', array('dataProvider' => $returnData['dataProvider'], 'arrayFilter'  => $returnData['arrayFilter']));
+    }
+    catch (Exception $e) {
+      Throw new CHttpException('500', $e->getMessage());
+    }
+  }
+
+  /**
+   * deletes the store with the given id
+   * @param int $id id of the store
+   * @return boolean true/false on success/failure of delete operation
+   */
+  public function actionDeleteProductType($id = NULL) {
+    try {
+      if (Yii::app()->request->isAjaxRequest) {
+        if ($id != NULL) {
+          $productTypeModel = ProductType::model()->findByPk($id);
+          if ($productTypeModel->delete()) {
+            return true;
+          }
+        }
+      }
+    }
+    catch (Exception $e) {
+      throw new CHttpException('500', $e->getMessage());
+    }
+  }
+
+  public function actionAddStoreForm() {
     try {
       if (Yii::app()->request->isAjaxRequest) {
         $storeModel = new Stores();
@@ -281,7 +337,6 @@ class SiteController extends Controller {
       Yii::app()->end();
     }
   }
-
 
   public function actionAddStore() {
     try {
@@ -318,6 +373,199 @@ class SiteController extends Controller {
     }
   }
 
+  public function actionListStores() {
+    try {
+      $storesModel = Stores::model()->findAll();
+      $stores = array();
+      if (!empty($storesModel)) {
+        $i=0;
+        foreach ($storesModel as $store) {
+          $stores[$i] = $store->attributes;
+          $stores[$i]['id']=$store->store_id;
+          $i++;
+        }
+      }
+
+      $arrayFilter = new ArrayFilterClass;
+
+      if (isset($_GET['ArrayFilterClass'])) {
+        $arrayFilter->filters = $_GET['ArrayFilterClass'];
+      }
+
+      $arrayProvider = $arrayFilter->filter($stores);
+      //re-indexing array keys
+//            $arrayProvider = array_values($arrayProvider);
+
+      $dataProvider = new CArrayDataProvider($arrayProvider, array('id'         => 'id', 'sort'       => array('attributes' => array('id', 'store_name')), 'pagination' => array('pageSize' => 10,)));
+
+      $returnData = array();
+      $returnData['dataProvider'] = $dataProvider;
+      $returnData['arrayFilter'] = $arrayFilter;
+      $this->render('stores_list', array('dataProvider' => $returnData['dataProvider'], 'arrayFilter'  => $returnData['arrayFilter']));
+    }
+    catch (Exception $e) {
+      Throw new CHttpException('500', $e->getMessage());
+    }
+  }
+
+  /**
+   * deletes the store with the given id
+   * @param int $id id of the store
+   * @return boolean true/false on success/failure of delete operation
+   */
+  public function actionDeleteStore($id = NULL) {
+    try {
+      if (Yii::app()->request->isAjaxRequest) {
+        if ($id != NULL) {
+          $storesModel = Stores::model()->findByPk($id);
+          if ($storesModel->delete()) {
+            return true;
+          }
+        }
+      }
+    }
+    catch (Exception $e) {
+      throw new CHttpException('500', $e->getMessage());
+    }
+  }
+
+  public function actionAddInventory() {
+    try {
+      $inventoryModel = new Inventory();
+      $inventoryModel->date = date('m-d-Y');
+      $storesModel = Stores::model()->findAll();
+      $stores = array();
+      foreach ($storesModel as $store) {
+        $stores[$store->store_name] = $store->store_name;
+      }
+      if (Yii::app()->request->isPostRequest) {
+        if (isset($_POST['Inventory'])) {
+          $inventoryModel->attributes = Yii::app()->request->getPost('Inventory');
+          $inventoryModel->date = date('Y-m-d');
+          if ($inventoryModel->validate()) {
+            if ($inventoryModel->save()) {
+              $this->redirect(Yii::app()->createAbsoluteUrl('/site/addinventory'));
+            }
+            else {
+              throw new CHttpException('500', 'The inventory information could not be saved. Please try again.');
+            }
+          }
+          else {
+            throw new CHttpException('500', ' Please fill the form properly.');
+          }
+        }
+      }
+
+      if (Yii::app()->request->getQuery('Inventory')) {
+        $inventoryModel->attributes = Yii::app()->request->getQuery('Inventory');
+      }
+      $inventoryCriteria = new CDbCriteria();
+      $condition = "date='" . date('Y-m-d') . "'";
+      $inventoryCriteria->addCondition($condition);
+      $inventoryInfo = Inventory::model()->findAll($inventoryCriteria);
+
+      $dataProviderContainer = $this->_getListArrayProvider($inventoryInfo);
+
+      $this->render('add_inventory', array('inventoryModel' => $inventoryModel, 'stores'         => $stores, 'dataProvider'   => $dataProviderContainer['dataProvider'], 'arrayFilter'    => $dataProviderContainer['arrayFilter']));
+    }
+    catch (Exception $e) {
+      throw new CHttpException('500', $e->getMessage());
+    }
+  }
+
+  public function actionInventoryList() {
+    try {
+      $inventoryModel = Inventory::model()->findAll();
+      $dataProviderContainer = $this->_getListArrayProvider($inventoryModel);
+      $this->render('inventory_list', array('dataProvider' => $dataProviderContainer['dataProvider'], 'arrayFilter'  => $dataProviderContainer['arrayFilter']));
+    }
+    catch (Exception $e) {
+      Throw new CHttpException('500', $e->getMessage());
+    }
+  }
+
+  /**
+   * deletes the product with the given id
+   * @param int $id id of the product
+   * @return boolean true/false on success/failure of delete operation
+   */
+  public function actionDelete($id = NULL) {
+    try {
+      if (Yii::app()->request->isAjaxRequest) {
+        if ($id != NULL) {
+          $productModel = Products::model()->findByPk($id);
+          if ($productModel->delete()) {
+            return true;
+          }
+        }
+      }
+    }
+    catch (Exception $e) {
+      throw new CHttpException('500', $e->getMessage());
+    }
+  }
+
+  /**
+   * Loads the update product form
+   * @param int $id id of the product to be updated
+   * @throws CHttpException
+   */
+  public function actionUpdateInventoryForm($id = NULL) {
+    try {
+      if (Yii::app()->request->isAjaxRequest) {
+        if (Yii::app()->request->isPostRequest) {
+          if ($id != NULL) {
+            $inventoryModel = Inventory::model()->findByPk($id);
+            $storesModel = Stores::model()->findAll();
+            $stores = array();
+            foreach ($storesModel as $store) {
+              $stores[$store->store_name] = $store->store_name;
+            }
+            if (isset($_POST['list']) && $_POST['list'] == "yes") {
+              $view = $this->renderPartial('partial_views/edit_inventory_list_form', array('inventoryModel' => $inventoryModel, 'location'       => $stores, 'id'             => $id), true);
+            }
+            else {
+              $view = $this->renderPartial('edit_inventory_form', array('inventoryModel' => $inventoryModel, 'location'       => $stores, 'id'             => $id), true);
+            }
+            echo CJSON::encode(array('view' => $view));
+            Yii::app()->end();
+          }
+        }
+      }
+    }
+    catch (Exception $e) {
+      throw new CHttpException('500', $e->getMessage());
+    }
+  }
+
+  public function actionUpdateInventory() {
+    try {
+      if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $inventoryModel = Inventory::model()->findByPk($id);
+        if (Yii::app()->request->isPostRequest) {
+          if (isset($_POST['Inventory'])) {
+            $inventoryModel->attributes = Yii::app()->request->getPost('Inventory');
+            if ($inventoryModel->validate()) {
+              if ($inventoryModel->update()) {
+                if (isset($_GET['list']) && $_GET['list'] == "yes") {
+                  $this->redirect(Yii::app()->createAbsoluteUrl('/site/inventorylist'));
+                }
+                else {
+                  $this->redirect(Yii::app()->createAbsoluteUrl('/site/addinventory', array('edit' => 'yes')));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    catch (Exception $e) {
+      throw new CHttpException('500', $e->getMessage());
+    }
+  }
+
+  // ****************auto generated actions *******************************//
   /**
    * This is the action to handle external exceptions.
    */
