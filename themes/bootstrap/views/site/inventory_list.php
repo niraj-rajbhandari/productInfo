@@ -1,9 +1,9 @@
 <div class="list-of-products">
-    <legend><strong>List of Sales</strong></legend>
+    <legend><strong>Inventory List</strong></legend>
     <?php
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider' => $dataProvider,
-        'id' => 'complete-product-list-gridview',
+        'id' => 'complete-inventory-list-gridview',
         'filter' => $arrayFilter,
         'type' => 'condensed striped ',
         'columns' => array(
@@ -38,16 +38,6 @@
                 'value' => '$data["marked_price"]',
             ),
             array(
-                'name' => 'selling_price',
-                'header' => 'Selling Price',
-                'value' => '$data["selling_price"]',
-            ),
-            array(
-                'name' => 'gross_profit',
-                'header' => 'Gross Profit',
-                'value' => '$data["gross_profit"]',
-            ),
-            array(
                 'name' => 'description',
                 'header' => 'Description',
                 'value' => '$data["description"]',
@@ -59,12 +49,12 @@
                     (
                     'delete' => array
                         (
-                        'label' => 'Delete this product',
-                        'url' => 'Yii::app()->createAbsoluteUrl("/site/delete",array("id"=>$data["id"]))',
+                        'label' => 'Delete this Inventory Item',
+                        'url' => 'Yii::app()->createAbsoluteUrl("/site/deleteInventory",array("id"=>$data["id"]))',
                     ),
                     'update' => array(
-                        'label' => 'Edit this product',
-                        'url' => 'Yii::app()->createAbsoluteUrl("/site/update",array("id"=>$data["id"]))',
+                        'label' => 'Edit this Inventory Item',
+                        'url' => 'Yii::app()->createAbsoluteUrl("/site/updateInventoryForm",array("id"=>$data["id"]))',
                     )
                 ),
             )
@@ -72,6 +62,6 @@
     ));
     ?>
 </div>
-<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'edit-products-modal')); ?>
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'edit-Inventory-modal')); ?>
 
 <?php $this->endWidget();?>

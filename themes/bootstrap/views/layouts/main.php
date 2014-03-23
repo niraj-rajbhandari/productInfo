@@ -38,28 +38,52 @@
               array(
                   'class' => 'bootstrap.widgets.TbMenu',
                   'items' => array(
-                      array('label' => 'Stores',
+                      array('label' => 'Admin',
                           'items' => array(
                               array(
                                   'label'       => 'Add Store',
                                   'url'         => 'javascript:void(0)',
                                   'itemOptions' => array('id' => 'add-store-menu')
                               ),
-                          )
-                      ),
-                      array('label' => 'Products',
-                          'items' => array(
+                              array(
+                                  'label' => 'List Stores',
+                                  'url'   => Yii::app()->createAbsoluteUrl('/site/liststores')
+                              ),
                               array(
                                   'label'       => 'Add Product Type',
                                   'url'         => 'javascript:void(0)',
                                   'itemOptions' => array('id' => 'add-product-type-menu')
                               ),
                               array(
-                                  'label' => 'List Products',
+                                  'label' => 'List Product Type',
+                                  'url'   => Yii::app()->createAbsoluteUrl('/site/listproducttype')
+                              )
+                          )
+                      ),
+                      array('label' => 'Sales',
+                          'items' => array(
+                              array(
+                                  'label' => 'Add Sales',
+                                  'url'   => Yii::app()->createAbsoluteUrl(''),
+                              ),
+                              array(
+                                  'label' => 'Sales List',
                                   'url'   => Yii::app()->createAbsoluteUrl('/site/listproducts'),
                               ),
                           )
                       ),
+                      array('label' => 'Inventory',
+                          'items' => array(
+                              array(
+                                  'label' => 'Inventory List',
+                                  'url'   => Yii::app()->createAbsoluteUrl('/site/inventorylist')
+                              ),
+                              array(
+                                  'label' => 'Add Product to Inventory',
+                                  'url'   => Yii::app()->createAbsoluteUrl('/site/addinventory')
+                              ),
+                          ),
+                      )
                   ),
               ),
           ),

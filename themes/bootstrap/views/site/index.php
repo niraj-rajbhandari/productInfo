@@ -6,8 +6,7 @@ $this->pageTitle = Yii::app()->name;
 
 <div class="form-add-product">
     <legend>
-        <strong>Product Entry Form</strong>
-<!--        <a href="javascript:void(0)" class="btn btn-small btn-inverse pull-right product-list">Show Product List</a>-->
+        <strong>Sales Entry Form</strong>
     </legend>
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -49,7 +48,7 @@ $this->pageTitle = Yii::app()->name;
 <div class="clearfix"></div>
 <hr>
 <div class="product-list">
-    <legend><strong>Products Added Today</strong></legend>
+    <legend><strong>Today's Sales</strong></legend>
     <?php
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider' => $dataProvider,
