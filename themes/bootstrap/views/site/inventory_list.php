@@ -44,7 +44,8 @@
             ),
             array(
                 'class' => 'bootstrap.widgets.TbButtonColumn',
-                'template' => '{delete}{update}',
+//                'template' => '{delete}{update}',
+                'template' => '{delete}',
                 'buttons' => array
                     (
                     'delete' => array
@@ -52,10 +53,10 @@
                         'label' => 'Delete this Inventory Item',
                         'url' => 'Yii::app()->createAbsoluteUrl("/site/deleteInventory",array("id"=>$data["id"]))',
                     ),
-                    'update' => array(
-                        'label' => 'Edit this Inventory Item',
-                        'url' => 'Yii::app()->createAbsoluteUrl("/site/updateInventoryForm",array("id"=>$data["id"]))',
-                    )
+//                    'update' => array(
+//                        'label' => 'Edit this Inventory Item',
+//                        'url' => 'Yii::app()->createAbsoluteUrl("/site/updateInventoryForm",array("id"=>$data["id"]))',
+//                    )
                 ),
             )
         )
