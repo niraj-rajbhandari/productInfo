@@ -48,6 +48,22 @@ $(function() {
     return false;
   });
 
+  // edit inventory on inventory add page
+  $(document).on('click', '#inventory-list-gridview .update', function() {
+    url = $(this).attr('href');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      dataType: 'JSON',
+      success: function(data) {
+        $('.form-add-inventory').html('');
+        $('.form-add-inventory').html(data.view);
+        $('html, body').animate({scrollTop: 0}, 'slow');
+      }
+    });
+    return false;
+  });
+
   $(document).on('click', '#complete-product-list-gridview .update', function() {
     url = $(this).attr('href');
     $.ajax({
@@ -59,6 +75,23 @@ $(function() {
         $('#edit-products-modal').html('');
         $('#edit-products-modal').html(data.view);
         $('#edit-products-modal').modal();
+      }
+    });
+    return false;
+  });
+
+// edit inventory from complete inventory list page
+  $(document).on('click', '#complete-inventory-list-gridview .update', function() {
+    url = $(this).attr('href');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: {list: 'yes'},
+      dataType: 'JSON',
+      success: function(data) {
+        $('#edit-inventory-modal').html('');
+        $('#edit-inventory-modal').html(data.view);
+        $('#edit-inventory-modal').modal();
       }
     });
     return false;
@@ -118,7 +151,7 @@ $(function() {
 
   $('.product-list').click(function() {
 
-    $('html,body').animate({scrollTop: $('#product-list-gridview').offset().top}, 'slow');
+//    $('html,body').animate({scrollTop: $('#product-list-gridview').offset().top}, 'slow');
   });
 
   $(document).on('click', '#add-store-menu', function() {
@@ -234,3 +267,8 @@ function autoUpdateGridView(id) {
 
 }
 autoUpdateGridView('product-list-gridview');
+autoUpdateGridView('complete-product-list-gridview');
+autoUpdateGridView('complete-inventory-list-gridview');
+autoUpdateGridView('inventory-list-gridview');
+autoUpdateGridView('stores-list-gridview');
+autoUpdateGridView('product-type-list-gridview');
