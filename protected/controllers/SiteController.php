@@ -54,6 +54,7 @@ class SiteController extends Controller {
               }
               else {
                 Yii::app()->user->setFlash('success', 'The sales info has been recorded! P.S : The code used is not in the inventory');
+                $dbTransaction->commit();
               }
             }
             else {
