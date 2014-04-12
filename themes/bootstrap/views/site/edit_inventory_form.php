@@ -20,6 +20,7 @@ echo $form->textFieldRow($inventoryModel, 'product_type', array('class' => 'inpu
 echo $form->dropdownListRow($inventoryModel, 'location', $location);
 echo $form->textFieldRow($inventoryModel, 'cost_price', array('id' => 'input-cost-price','autocomplete'=>'off'));
 echo $form->textFieldRow($inventoryModel, 'marked_price',array('autocomplete'=>'off'));
+echo $form->textFieldRow($inventoryModel, 'quantity',array('autocomplete'=>'off'));
 echo $form->textAreaRow($inventoryModel, 'description', array('cols' => '5', 'rows' => '5'));
 ?>
 <div class="control-group">

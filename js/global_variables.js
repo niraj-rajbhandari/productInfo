@@ -14,6 +14,14 @@ $(function() {
     },
     listAll: function() {
       return global_variables;
+    },
+    /**
+     * removes the property from global variable object
+     * @param {string} variable_name
+     * @returns {bool} true
+     */
+    remove: function(variable_name) {
+      delete global_variables[variable_name];
     }
   };
 });

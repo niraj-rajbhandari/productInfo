@@ -35,20 +35,37 @@ class SiteController extends Controller {
       }
       if (Yii::app()->request->isPostRequest) {
         if (isset($_POST['Products'])) {
+          $dbTransaction = Yii::app()->db->beginTransaction();
           $productModel->attributes = Yii::app()->request->getPost('Products');
           $productModel->date = date('Y-m-d');
           if ($productModel->validate()) {
             if ($productModel->save()) {
-              $this->redirect(Yii::app()->createAbsoluteUrl(''));
+              $inventoryModel = Inventory::model()->findByAttributes(array('code' => $productModel->code));
+              if (!empty($inventoryModel)) {
+                $inventoryModel->quantity = $inventoryModel->quantity - 1;
+                if ($inventoryModel->save()) {
+                  $dbTransaction->commit();
+                  Yii::app()->user->setFlash('success', 'The sales info has been recorded.');
+                }
+                else {
+                  $dbTransaction->rollback();
+                  Yii::app()->user->setFlash('error', 'The product is not available in the inventory');
+                }
+              }
+              else {
+                Yii::app()->user->setFlash('success', 'The sales info has been recorded! P.S : The code used is not in the inventory');
+              }
             }
             else {
-              throw new CHttpException('500', 'The product information could not be saved. Please try again.');
+              $dbTransaction->rollback();
+              Yii::app()->user->setFlash('error', 'The product information could not be saved. Please try again.');
             }
           }
           else {
-            throw new CHttpException('500', ' Please fill the form properly.');
+            Yii::app()->user->setFlash('error', 'Please fill the form properly');
           }
         }
+        $this->redirect(Yii::app()->createAbsoluteUrl(''));
       }
 
       if (Yii::app()->request->getQuery('Products')) {
@@ -82,9 +99,13 @@ class SiteController extends Controller {
   //gets array provider for grid view
   private function _getListArrayProvider($productsInfo) {
     $products = array();
+    $isInventory = false;
     if (!empty($productsInfo)) {
       foreach ($productsInfo as $product) {
         $products[] = $product->attributes;
+        if (isset($product->quantity)) {
+          $isInventory = true;
+        }
       }
     }
     if (!empty($products)) {
@@ -102,7 +123,15 @@ class SiteController extends Controller {
     //re-indexing array keys
 //            $arrayProvider = array_values($arrayProvider);
 
-    $dataProvider = new CArrayDataProvider($arrayProvider, array('id'         => 'id', 'sort'       => array('attributes' => array('code', 'product_type', 'location', 'cost_price', 'selling_price', 'marked_price', 'gross_profit', 'date'),), 'pagination' => array('pageSize' => 20,)));
+    $sortingArray = array();
+    if ($isInventory) {
+      $sortingArray = array('code', 'product_type', 'location', 'cost_price', 'selling_price', 'marked_price', 'gross_profit', 'date', 'quantity');
+    }
+    else {
+      $sortingArray = array('code', 'product_type', 'location', 'cost_price', 'selling_price', 'marked_price', 'gross_profit', 'date');
+    }
+//    echo "<pre>".$isInventory;print_r($productsInfo);print_r($sortingArray);die('testing');
+    $dataProvider = new CArrayDataProvider($arrayProvider, array('id'         => 'id', 'sort'       => array('attributes' => $sortingArray,), 'pagination' => array('pageSize' => 20,)));
 
     $returnData = array();
     $returnData['dataProvider'] = $dataProvider;
@@ -378,10 +407,10 @@ class SiteController extends Controller {
       $storesModel = Stores::model()->findAll();
       $stores = array();
       if (!empty($storesModel)) {
-        $i=0;
+        $i = 0;
         foreach ($storesModel as $store) {
           $stores[$i] = $store->attributes;
-          $stores[$i]['id']=$store->store_id;
+          $stores[$i]['id'] = $store->store_id;
           $i++;
         }
       }
@@ -563,6 +592,42 @@ class SiteController extends Controller {
     catch (Exception $e) {
       throw new CHttpException('500', $e->getMessage());
     }
+  }
+
+  /**
+   *  checks the availability of the code in the inventory
+   * */
+  public function actionCheckAvailability() {
+    $response = array();
+    if (Yii::app()->request->isAjaxRequest) {
+      $code = Yii::app()->request->getParam('code');
+      $inventoryModel = Inventory::model()->findByAttributes(array('code' => $code));
+      if (!empty($inventoryModel)) {
+//        if (intval($inventoryModel->quantity) == 0) {
+//        $response['status'] = 'success';
+//        $response['available'] = 'no';
+//        $response['msg'] = 'This product is out of stock';
+//      }
+//      else {
+//        $response['status'] = 'success';
+//        $response['available'] = 'yes';
+//        $response['msg'] = 'This product is available';
+//      }
+        $response['status'] = 'success';
+        $response['available'] = 'yes';
+      }
+      else {
+        $response['status'] = 'success';
+        $response['available'] = 'not in inventory';
+        $response['msg'] = 'This code is not available in the inventory';
+      }
+    }
+    else {
+      $response['status'] = 'error';
+      $response['msg'] = 'Permission Denied!!!';
+    }
+    echo CJSON::encode($response);
+    Yii::app()->end();
   }
 
   // ****************auto generated actions *******************************//

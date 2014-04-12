@@ -77,6 +77,10 @@ a:focus, a.active,input[type="submit"]:active,input[type="submit"]:focus,.btn:fo
   margin: 0 auto;
   max-width: 660px;
 }
+.not-available {
+    font-size: 10px;
+    margin: 10px 0 5px;
+}
 .modal {
   position: absolute !important;
   top: 10% !important;

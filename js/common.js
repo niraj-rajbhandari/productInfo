@@ -23,6 +23,7 @@ $(function() {
     $('.nav li.dropdown').removeClass('open');
   });
   //------------------------------
+  $('.alert.not-available').hide();
   $('#input-selling-price').focusout(function() {
     var costPrice = $('#input-cost-price').val();
     var sellingPrice = $('#input-selling-price').val();
@@ -238,6 +239,39 @@ $(function() {
       console.log(xhr);
     });
     return false;
+  });
+  var checkAvailabilityErrorMsg = '  <div class="not-available" style="display:none">' +
+          '<span class="error-msg alert alert-error "></span>' +
+          '</div>';
+  $('#Products_code').after(checkAvailabilityErrorMsg);
+  $(document).on('blur', '#Products_code', function() {
+    var url = $global_variable.get('baseUrl') + '/site/checkAvailability';
+    var code = $(this).val();
+    $.ajax({
+      type: 'GET',
+      url: url,
+      data: {code: code},
+      dataType: 'JSON'
+    }).done(function(response) {
+      if (response.status == "success") {
+        if (response.available=='not in inventory') {
+          $('.not-available .error-msg').html('');
+          $('.not-available .error-msg').html(response.msg);
+          $('.not-available').css('display', '');
+        }
+        else {
+          $('.not-available .error-msg').html('');
+          $('.not-available').css('display', 'none');
+        }
+      } else {
+        console.log(response);
+      }
+    }).fail(function(xhr) {
+      console.log(xhr);
+    });
+  });
+  $(document).on('click', '#form-add-products button[type="reset"]', function() {
+    $('.not-available').css('display','none');
   });
 });
 
